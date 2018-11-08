@@ -1,0 +1,4 @@
+node_modules/
+.vscode/
+action.json
+creds.data

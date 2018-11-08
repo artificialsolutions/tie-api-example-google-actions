@@ -1,0 +1,16 @@
+{
+    "name": "heroku-teneo-google-assistant",
+    "description": "A Google Assistant bot powered by Teneo.",
+    "keywords": [
+        "bot",
+        "Google Assistant",
+        "Teneo"
+    ],
+    "repository": "https://github.com/artificialsolutions/tie-api-example-google-actions/",
+    "env": {
+        "TENEO_ENGINE_URL": {
+            "description": "Please input your Teneo Engine URL. https://some.engine/instance/",
+            "required":true
+        }
+    }
+}
