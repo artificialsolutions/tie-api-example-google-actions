@@ -86,7 +86,7 @@ You should now be able to test your bot:
 3. To activate your bot, ask Google Assistant 'Talk to [your bot]'. After that, your inputs will be sent to your bot.
 
 ## Sending rich responses
-To send [rich responses](https://developers.google.com/actions/assistant/responses#rich-responses), this connector checks for an output parameter `googleactions` in the engine response. The value of that parameter is assumed to contain the rich response JSON as defined by Google.
+To send [rich responses](https://developers.google.com/actions/assistant/responses#rich-responses), this connector looks for an output parameter `googleactions` in the engine response. The value of that parameter is assumed to contain the rich response JSON as defined by Google.
 
 If we look at Google's specification of a [basic card](https://developers.google.com/actions/assistant/responses#basic_card), the value of the `googleactions` output parameter to attach an image would look like this: 
 ```
