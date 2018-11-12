@@ -105,7 +105,7 @@ If we look at Google's specification of a [basic card](https://developers.google
 If you prefer to manually install this connector or run it locally, proceed as follows:
 1. Download or clone the connector source code from [Github](https://github.com/artificialsolutions/tie-api-example-google-actions).
 2. Install dependencies by running `npm install` in the folder where you stored the source.
-3. Make sure your connecter is available via https. When running locally you can for example use ngrok for this: [ngork.com](https://ngrok.com). The connector runs on port 3769 by default.
+3. Make sure your connector is available via https. When running locally you can for example use ngrok for this: [ngrok.com](https://ngrok.com). The connector runs on port 3769 by default.
 4. Start the connector with the following command (replacing the environment variables with the appropriate values):
     ```
     TENEO_ENGINE_URL=<your_engine_url> node server.js
