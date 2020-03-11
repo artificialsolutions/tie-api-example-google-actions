@@ -84,7 +84,7 @@ Alternatively you can use the Google Actions Command Line Interface to generate 
     (alternatively you can modify the 'Update action command' you copied earlier and replace 'PACKAGE_NAME' with 'action.json')
 3. Follow the instructions in the terminal to authenticate.
 
-If you don't know or lost your PROJECT_ID, you can find it in the URL of your Google Assistant Project. In the next example URL, the part in bold is the PROJECT_ID: <span>https://console.actions.google.com/u/0/project/**myproject**/overview</span>
+If you don't know or lost your PROJECT_ID, you can find it in the URL of your Google Assistant Project. In the next example URL, the part in bold is the PROJECT_ID: ht<span>tp://</span>console.actions.google.com/u/0/project/**myproject**/overview
 
 ## Test your bot
 You should now be able to test your bot:
