@@ -16,6 +16,9 @@
 
 'use strict';
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const { BasicCard, actionssdk } = require('actions-on-google')
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -52,7 +55,8 @@ async function handleMessage(conv) {
 
     // get answer to message from teneo using sessionId stored in user storage
     const teneoResponse = await teneoApi.sendInput(conv.user.storage.sessionId, {
-            text: message
+            text: message,
+            'channel': 'googleactions'
     })
     
     if (teneoResponse.status == 0) {
@@ -92,3 +96,4 @@ expressApp.get('/', function(req, res){
     res.send('Connector running');
 });
 expressApp.listen(process.env.PORT || 3769)
+console.log("listening on port " + process.env.PORT)
