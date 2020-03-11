@@ -19,7 +19,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const { BasicCard, actionssdk } = require('actions-on-google')
+const { BasicCard, actionssdk } = require('actions-on-google');
 const express = require('express');
 const bodyParser = require('body-parser');
 const TIE = require('@artificialsolutions/tie-api-client');
@@ -27,6 +27,9 @@ const TIE = require('@artificialsolutions/tie-api-client');
 const teneoApi = TIE.init(process.env.TENEO_ENGINE_URL);
 
 const assistant = actionssdk();
+
+// initialise session handler, to store mapping between conversationId and engine session id
+const sessionHandler = SessionHandler();
 
 // Hande main intent
 assistant.intent('actions.intent.MAIN', async conv => {
@@ -67,7 +70,7 @@ async function handleMessage(conv) {
     const teneoResponse = await teneoApi.sendInput(teneoSessionId, {
         text: message,
         'channel': 'googleactions'
-    })
+    });
 
     if (teneoResponse.status == 0) {
         console.log(`Got Teneo Engine response '${teneoResponse.output.text}' with session ${teneoResponse.sessionId}`);
@@ -108,7 +111,6 @@ async function handleMessage(conv) {
 
 }
 
-
 /***
  * SESSION HANDLER
  ***/
@@ -118,26 +120,27 @@ function SessionHandler() {
     // This code keeps the map in memory, which is ok for testing purposes
     // For production usage it is advised to make use of more resilient storage mechanisms like redis
     const sessionMap = new Map();
-
+  
     return {
-        getSession: (userId) => {
-            if (sessionMap.size > 0) {
-                return sessionMap.get(userId);
-            }
-            else {
-                return "";
-            }
-        },
-        setSession: (userId, sessionId) => {
-            sessionMap.set(userId, sessionId)
+      getSession: (userId) => {
+        if (sessionMap.size > 0) {
+          return sessionMap.get(userId);
         }
+        else {
+          return "";
+        }
+      },
+      setSession: (userId, sessionId) => {
+        sessionMap.set(userId, sessionId)
+      }
     };
 }
 
+
 const expressApp = express().use(bodyParser.json());
-expressApp.post('/', assistant)
+expressApp.post('/', assistant);
 expressApp.get('/', function (req, res) {
     res.send('Connector running');
 });
-expressApp.listen(process.env.PORT || 3769)
-console.log("listening on port " + process.env.PORT)
+expressApp.listen(process.env.PORT || 3769);
+console.log("listening on port " + process.env.PORT);
