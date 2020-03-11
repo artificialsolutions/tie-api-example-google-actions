@@ -46,15 +46,25 @@ assistant.intent('actions.intent.TEXT', async conv => {
 
 async function handleMessage(conv) {
 
+    // get the id of the conversation so we can map it to an engine session
+    var userToken = conv.id;
+
+    // check if we have stored an engine sessionid for this user
+    var teneoSessionId = "";
+    if (sessionHandler.getSession(userToken)) {
+        teneoSessionId = sessionHandler.getSession(userToken);
+    }
+    console.log("teneoSessionId: " + teneoSessionId);
+
     // message can be empty, mostly for main intent
     let message = "";
     if(conv.input.raw) {
         message = conv.input.raw;
     }
-    console.log(`Got message '${message}' for session: '${conv.user.storage.sessionId}'`);
+    console.log(`Got message '${message}' for session: '${teneoSessionId}'`);
 
     // get answer to message from teneo using sessionId stored in user storage
-    const teneoResponse = await teneoApi.sendInput(conv.user.storage.sessionId, {
+    const teneoResponse = await teneoApi.sendInput(teneoSessionId, {
             text: message,
             'channel': 'googleactions'
     })
@@ -65,8 +75,9 @@ async function handleMessage(conv) {
         // your bot can use output parameters to populate rich responses
         // you would find those in teneoResponse.output.parameters
 
-        // store engine session id in user storage
-        conv.user.storage.sessionId = teneoResponse.sessionId;
+        // store engine session id session storage
+        console.log("storing session [" + teneoResponse.sessionId + "] for token [" + userToken + "]")
+        sessionHandler.setSession(userToken, teneoResponse.sessionId);
 
         // send teneo answer to assistant
         conv.ask(teneoResponse.output.text);
@@ -88,6 +99,32 @@ async function handleMessage(conv) {
         conv.close("I'm sorry, something went wrong.");
     }
 
+}
+
+
+/***
+ * SESSION HANDLER
+ ***/
+function SessionHandler() {
+
+    // Map the conversation id id to the teneo engine session id. 
+    // This code keeps the map in memory, which is ok for testing purposes
+    // For production usage it is advised to make use of more resilient storage mechanisms like redis
+    const sessionMap = new Map();
+  
+    return {
+      getSession: (userId) => {
+        if (sessionMap.size > 0) {
+          return sessionMap.get(userId);
+        }
+        else {
+          return "";
+        }
+      },
+      setSession: (userId, sessionId) => {
+        sessionMap.set(userId, sessionId)
+      }
+    };
 }
 
 const expressApp = express().use(bodyParser.json());
