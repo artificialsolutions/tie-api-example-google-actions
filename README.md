@@ -14,7 +14,9 @@ You will need to install the Google Actions Command Line Interface [gaction CLI]
 ## Setup instructions
 ### Deploy the bot connector
 1. Click the button below to deploy the connector to Heroku:
+
     [![Deploy](https://www.herokucdn.com/deploy/button.svg?classes=heroku)](https://heroku.com/deploy?template=https://github.com/artificialsolutions/tie-api-example-google-actions)
+    
 2. In the 'Config Vars' section, add the following:
 	* **TENEO_ENGINE_URL:** The engine url.
 3. Click 'View app' and copy the url of your Heroku app and store it somewhere, you will need it later. It will be referred to as your 'connector url'.
