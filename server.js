@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 
 'use strict';
 
@@ -24,7 +24,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const TIE = require('@artificialsolutions/tie-api-client');
 
-const teneoApi = TIE.init(process.env.TENEO_ENGINE_URL); 
+const teneoApi = TIE.init(process.env.TENEO_ENGINE_URL);
 
 const assistant = actionssdk();
 
@@ -58,17 +58,17 @@ async function handleMessage(conv) {
 
     // message can be empty, mostly for main intent
     let message = "";
-    if(conv.input.raw) {
+    if (conv.input.raw) {
         message = conv.input.raw;
     }
     console.log(`Got message '${message}' for session: '${teneoSessionId}'`);
 
     // get answer to message from teneo using sessionId stored in user storage
     const teneoResponse = await teneoApi.sendInput(teneoSessionId, {
-            text: message,
-            'channel': 'googleactions'
+        text: message,
+        'channel': 'googleactions'
     })
-    
+
     if (teneoResponse.status == 0) {
         console.log(`Got Teneo Engine response '${teneoResponse.output.text}' with session ${teneoResponse.sessionId}`);
 
@@ -79,9 +79,16 @@ async function handleMessage(conv) {
         console.log("storing session [" + teneoResponse.sessionId + "] for token [" + userToken + "]")
         sessionHandler.setSession(userToken, teneoResponse.sessionId);
 
+        // check if we need to close the conversation 
+        const outputType = teneoResponse.output.parameters.gaOutputType;
+
         // send teneo answer to assistant
-        conv.ask(teneoResponse.output.text);
-        
+        if (outputType == 'close') {
+            conv.close(teneoResponse.output.text);
+        } else {
+            conv.ask(teneoResponse.output.text);
+        }
+
         // parse engine output parameter 'googleactions' with rich response data
         // but only if assistant device supports rich responses
         // https://developers.google.com/actions/assistant/responses#rich-responses
@@ -111,25 +118,25 @@ function SessionHandler() {
     // This code keeps the map in memory, which is ok for testing purposes
     // For production usage it is advised to make use of more resilient storage mechanisms like redis
     const sessionMap = new Map();
-  
+
     return {
-      getSession: (userId) => {
-        if (sessionMap.size > 0) {
-          return sessionMap.get(userId);
+        getSession: (userId) => {
+            if (sessionMap.size > 0) {
+                return sessionMap.get(userId);
+            }
+            else {
+                return "";
+            }
+        },
+        setSession: (userId, sessionId) => {
+            sessionMap.set(userId, sessionId)
         }
-        else {
-          return "";
-        }
-      },
-      setSession: (userId, sessionId) => {
-        sessionMap.set(userId, sessionId)
-      }
     };
 }
 
 const expressApp = express().use(bodyParser.json());
 expressApp.post('/', assistant)
-expressApp.get('/', function(req, res){
+expressApp.get('/', function (req, res) {
     res.send('Connector running');
 });
 expressApp.listen(process.env.PORT || 3769)
