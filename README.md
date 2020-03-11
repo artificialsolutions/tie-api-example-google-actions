@@ -16,7 +16,7 @@ You will need to install the Google Actions Command Line Interface [gaction CLI]
 1. Click the button below to deploy the connector to Heroku:
 
     [![Deploy](https://www.herokucdn.com/deploy/button.svg?classes=heroku)](https://heroku.com/deploy?template=https://github.com/artificialsolutions/tie-api-example-google-actions)
-    
+
 2. In the 'Config Vars' section, add the following:
 	* **TENEO_ENGINE_URL:** The engine url.
 3. Click 'View app' and copy the url of your Heroku app and store it somewhere, you will need it later. It will be referred to as your 'connector url'.
@@ -73,7 +73,7 @@ In order to connect your bot to Google Assistant, you first need to create your 
 3. Replace <mark>YOUR_CONNECTOR_URL</mark> with the URL of your deployed bot connector.
 4. Save the file and call it `action.json`.
 
-!!! Alternatively you can use the Google Actions Command Line Interface to generate an <mark>action.json</mark> file by running the command `gactions init`
+Alternatively you can use the Google Actions Command Line Interface to generate an <mark>action.json</mark> file by running the command `gactions init`
 
 ### Push your action package to the Assistant Platform
 1. Download the [gactions CLI](https://developers.google.com/actions/tools/gactions-cli) and follow the installation instructions.
@@ -84,7 +84,7 @@ In order to connect your bot to Google Assistant, you first need to create your 
     (alternatively you can modify the 'Update action command' you copied earlier and replace 'PACKAGE_NAME' with 'action.json')
 3. Follow the instructions in the terminal to authenticate.
 
-!!! You can find the PROJECT_ID in the URL of your Google Assistant Project that you created earlier. In the next example URL, the part in bold is the PROJECT_ID: https://console.actions.google.com/u/0/project/**myproject**/overview
+If you don't know or lost your PROJECT_ID, you can find it in the URL of your Google Assistant Project. In the next example URL, the part in bold is the PROJECT_ID: <span>https://console.actions.google.com/u/0/project/**myproject**/overview</span>
 
 ## Test your bot
 You should now be able to test your bot:
