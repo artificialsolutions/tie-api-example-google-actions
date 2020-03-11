@@ -1,8 +1,5 @@
-# tie-api-example-google-actions
-
+# Google Assistant Example Connector for Teneo
 This node.js example connector uses the Google Actions SDK which allows you to make your Teneo bot available on Google Assistant and Google Home. The connector acts as middleware between the Google Assistant and Teneo. This guide will take you through the steps needed to make your bot available for testing on Google Assistant.
-
-You can find the source code of this connector on [Github](https://github.com/artificialsolutions/tie-api-example-google-actions).
 
 ## Prerequisites
 ### Https
@@ -16,22 +13,25 @@ You will need to install the Google Actions Command Line Interface [gaction CLI]
 
 ## Setup instructions
 ### Deploy the bot connector
-Click the button below to deploy the connector to Heroku:
+1. Click the button below to deploy the connector to Heroku:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg?classes=noborder)](https://heroku.com/deploy?template=https://github.com/artificialsolutions/tie-api-example-google-actions)
+    [![Deploy](https://www.herokucdn.com/deploy/button.svg?classes=heroku)](https://heroku.com/deploy?template=https://github.com/artificialsolutions/tie-api-example-google-actions)
 
-In the 'Config Vars' section, add the following:
-* **TENEO_ENGINE_URL:** The engine url.
+2. In the 'Config Vars' section, add the following:
+	* **TENEO_ENGINE_URL:** The engine url.
+3. Click 'View app' and copy the url of your Heroku app and store it somewhere, you will need it later. It will be referred to as your 'connector url'.
 
-Click 'View app' and copy the url of your Heroku app, you will need it in the next step.
-
-!!! If you prefer to run your bot locally, see [Running the connector locally](#running-the-connector-locally).
+If you prefer to run your bot locally, see [Running the connector locally](#running-the-connector-locally).
 
 ### Create a Google Assistant Project
 
 1. Go to the [Actions on Google Developer Console](http://console.actions.google.com/).
-2. Click on Add Project, enter name for the project, and click Create Project.
-3. On the page that appeard, choose 'Skip' in the top right corner.
+2. Click on Add Project, enter name for the project, specify language and country and click Create Project.
+3. On the page that appears, scroll down and under 'More options', choose Assistant SDK.
+4. In the popup that appears, copy the 'Update action' command and store it somewhere, you will need it later.
+5. Click OK to close the popup.
+6. On the screen that appears, under 'Quick Setup', click 'Decide how your Action is invoked' 
+7. Under 'Display name' choose the invocation name you want to use for your bot and click 'Save'.
 
 ### Create an Action package
 In order to connect your bot to Google Assistant, you first need to create your own 'action package' locally as a JSON file. You will 'push' this action package to Google Assistant later.
@@ -39,56 +39,75 @@ In order to connect your bot to Google Assistant, you first need to create your 
 1. Create a text file with the following content:
     ```
     {
-      "actions": [
-        {
-          "name": "MAIN",
-          "intent": {
-            "name": "actions.intent.MAIN"
-          },
-          "fulfillment": {
-            "conversationName": "teneo"
-          }
+        "actions": [
+            {
+                "description": "Default Welcome Intent",
+                "name": "MAIN",
+                "intent": {
+                    "name": "actions.intent.MAIN"
+                },
+                "fulfillment": {
+                    "conversationName": "teneo"
+                }
+            },
+            {
+                "description": "Conversational inputs",
+                "name": "TEXT",
+                "intent": {
+                    "name": "actions.intent.TEXT"
+                },
+                "fulfillment": {
+                    "conversationName": "teneo"
+                }
+            }
+        ],
+        "conversations": {
+            "teneo": {
+                "name": "teneo",
+                "url": "YOUR_CONNECTOR_URL"
+            }
         },
-        {
-          "name": "TEXT",
-          "intent": {
-            "name": "actions.intent.TEXT"
-          },
-          "fulfillment": {
-            "conversationName": "teneo"
-          }
-        }
-      ],
-      "conversations": {
-        "teneo": {
-          "name": "teneo",
-          "url": "YOUR_CONNECTOR_URL",
-          "fulfillmentApiVersion": 2
-        }
-      }
-    }
+        "locale": "en"
+	}
     ```
-3. Replace <mark>YOUR_CONNECTOR_URL</mark> in line 25 with the URL of your deployed bot connector.
+3. Replace <mark>YOUR_CONNECTOR_URL</mark> with the URL of your deployed bot connector.
 4. Save the file and call it `action.json`.
+
+Alternatively you can use the Google Actions Command Line Interface to generate an <mark>action.json</mark> file by running the command `gactions init`
 
 ### Push your action package to the Assistant Platform
 1. Download the [gactions CLI](https://developers.google.com/actions/tools/gactions-cli) and follow the installation instructions.
 2. Run the following command to push your action package to the Assistant Platform (replace PROJECT_ID with the id of your Google Assistant project):
     ```
-    $ gactions test --action_package action.json --project PROJECT_ID
+    $ gactions update --action_package action.json --project PROJECT_ID
     ```
-    Follow the instructions in the terminal to authenticate.
+    (alternatively you can modify the 'Update action command' you copied earlier and replace 'PACKAGE_NAME' with 'action.json')
+3. Follow the instructions in the terminal to authenticate.
 
-### Test your bot
+If you don't know or lost your PROJECT_ID, you can find it in the URL of your Google Assistant Project. In the next example URL, the part in bold is the PROJECT_ID: ht<span>tp://</span>console.actions.google.com/u/0/project/**myproject**/overview
+
+## Test your bot
 You should now be able to test your bot:
 1. Open your project on the [Actions on Google Developer Console](http://console.actions.google.com/).
 2. On the left, under 'TEST' choose 'Simulator'.
-3. To activate your bot, ask Google Assistant 'Talk to [your bot]'. After that, your inputs will be sent to your bot.
+3. To activate your bot, ask Google Assistant 'Talk to [your bot invocation name]'. After that, your inputs will be sent to your bot.
 
-## Sending rich responses
-To send [rich responses](https://developers.google.com/actions/assistant/responses#rich-responses), this connector looks for an output parameter `googleactions` in the engine response. The value of that parameter is assumed to contain the rich response JSON as defined by Google.
+## Engine input parameters
+The connector will send the following input parameter along with the user input to the Teneo engine:
 
-If we look at Google's specification of a [basic card](https://developers.google.com/actions/assistant/responses#basic_card), the value of the `googleactions` output parameter to attach an image would look like this: 
+### channel
+The input parameter `channel` with value `googleactions` is included in each request. This allows you to add channel specfic optimisations to your bot.
+
+## Engine output parameters
+The connector will check for the following output parameters in an output:
+
+### gaOutputType
+By default the connector will open the microphone after each answer that was received from Teneo. If the output parameter `gaOutputType` with the value `close` exists, the conversation will be ended.
+
+### googleactions - Sending rich responses
+To send [rich responses](https://developers.google.com/actions/assistant/responses#rich-responses), this connector looks for an [output parameter](/api#output-object) <mark>googleactions</mark> in the engine response. The value of that parameter is assumed to contain the rich response JSON as defined by Google.
+
+If we look at Google's specification of a [basic card](https://developers.google.com/actions/assistant/responses#basic_card), the value of the <mark>googleactions</mark> output parameter to attach an image would look like this: 
 ```
 {
     "basicCard": {
@@ -101,12 +120,19 @@ If we look at Google's specification of a [basic card](https://developers.google
 }
 ```
 
+For more details on how to populate output parameters in Teneo, please see: [How to populate output parameters](https://developers.artificial-solutions.com/studio/scripting/how-to/populate-output-parameters) in the [Build your bot](https://developers.artificial-solutions.com/studio/) section.
+
 ## Running the connector locally
-If you prefer to manually install this connector or run it locally, proceed as follows:
+If you prefer to manually install this connector or run it locally so you can extend it, proceed as follows:
 1. Download or clone the connector source code from [Github](https://github.com/artificialsolutions/tie-api-example-google-actions).
 2. Install dependencies by running `npm install` in the folder where you stored the source.
 3. Make sure your connector is available via https. When running locally you can for example use ngrok for this: [ngrok.com](https://ngrok.com). The connector runs on port 3769 by default.
-4. Start the connector with the following command (replacing the environment variables with the appropriate values):
+4. Create a `.env` file in the folder where you stored the source and add the URL of your engine. Optionally you can also specify the port number:
     ```
-    TENEO_ENGINE_URL=<your_engine_url> node server.js
+    TENEO_ENGINE_URL=<your_engine_url>
+    PORT=3769
+    ```
+5. Start the connector with the following command:
+    ```
+    node server.js
     ```
