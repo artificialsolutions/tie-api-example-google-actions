@@ -27,11 +27,13 @@ If you prefer to run your bot locally, see [Running the connector locally](#runn
 
 1. Go to the [Actions on Google Developer Console](http://console.actions.google.com/).
 2. Click on Add Project, enter name for the project, specify language and country and click Create Project.
-3. On the page that appears, scroll down and under 'More options', choose Assistant SDK.
-4. In the popup that appears, copy the 'Update action' command and store it somewhere, you will need it later.
-5. Click OK to close the popup.
+3. On the page that appears, scroll down, select 'Custom', and click 'Next'.
+4. Select 'Conversation Component', click 'Start Building', and wait a few moments for the Action Console's dashboard to appear.
 6. On the screen that appears, under 'Quick Setup', click 'Decide how your Action is invoked' 
-7. Under 'Display name' choose the invocation name you want to use for your bot and click 'Save'.
+5. In 'Display Name', choose the invocation name you want to use to start a conversation with your bot.
+Note: Some words are not allowed in the display name, for example: 'bot', 'assistant, and 'Google'.
+6. Select a Google Assistant Voice, and click 'Save'.
+
 
 ### Create an Action package
 In order to connect your bot to Google Assistant, you first need to create your own 'action package' locally as a JSON file. You will 'push' this action package to Google Assistant later.
@@ -89,7 +91,7 @@ If you don't know or lost your PROJECT_ID, you can find it in the URL of your Go
 ## Test your bot
 You should now be able to test your bot:
 1. Open your project on the [Actions on Google Developer Console](http://console.actions.google.com/).
-2. On the left, under 'TEST' choose 'Simulator'.
+2. Click on the 'Test' tab. 
 3. To activate your bot, ask Google Assistant 'Talk to [your bot invocation name]'. After that, your inputs will be sent to your bot.
 
 ## Engine input parameters
