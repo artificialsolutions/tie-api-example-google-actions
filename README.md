@@ -79,20 +79,21 @@ Alternatively you can use the Google Actions Command Line Interface to generate 
 
 ### Push your action package to the Assistant Platform
 1. Download the [gactions CLI](https://developers.google.com/actions/tools/gactions-cli) and follow the installation instructions.
-2. Run the following command to push your action package to the Assistant Platform (replace PROJECT_ID with the id of your Google Assistant project):
+2. Take note of PROJECT_ID, which is found in the URL of your Google Assistant Project. 
+    In the next example URL, the part in bold is the PROJECT_ID: ht<span>tp://</span>console.actions.google.com/u/0/project/**myproject**/overview
+3. Run the following command to push your action package to the Assistant Platform. Replace PROJECT_ID with the id of your Google Assistant project obtained in the previous step:
     ```
     $ gactions update --action_package action.json --project PROJECT_ID
     ```
     (alternatively you can modify the 'Update action command' you copied earlier and replace 'PACKAGE_NAME' with 'action.json')
-3. Follow the instructions in the terminal to authenticate.
-
-If you don't know or lost your PROJECT_ID, you can find it in the URL of your Google Assistant Project. In the next example URL, the part in bold is the PROJECT_ID: ht<span>tp://</span>console.actions.google.com/u/0/project/**myproject**/overview
+    
+4. Follow the instructions in the terminal to authenticate.
 
 ## Test your bot
 You should now be able to test your bot:
 1. Open your project on the [Actions on Google Developer Console](http://console.actions.google.com/).
-2. Click on the 'Test' tab. 
-3. To activate your bot, ask Google Assistant 'Talk to [your bot invocation name]'. After that, your inputs will be sent to your bot.
+2. Click on the 'Test' tab. Then, if this is the first time you open 'Test', a 'Start Testing' button may be shown. Click it and select 'Version-Draft' as the default action.
+4. To activate your bot, ask Google Assistant 'Talk to [your bot invocation name]'. After that, your inputs will be sent to your bot.
 
 ## Engine input parameters
 The connector will send the following input parameter along with the user input to the Teneo engine:
