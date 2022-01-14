@@ -27,7 +27,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "node-forge": "^0.10.0"
+    "node-forge": "^1.0.0"
   },
   "resolutions": {
     "node-forge": "^0.10.0"
