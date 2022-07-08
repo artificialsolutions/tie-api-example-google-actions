@@ -1,9 +1,12 @@
 {
   "name": "@artificialsolutions/tie-api-example-google-actions-sdk",
-  "version": "1.1.1",
+  "version": "2.0",
   "description": "Example connector for Teneo and Google Assistant",
   "license": "Apache-2.0",
-  "author": "Lucas Willering",
+  "author": "Lucas Willering & Ramazan Gurbuz",
+  "engines": {
+    "node": "10.15.1"
+  },
   "main": "server.js",
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
@@ -17,7 +20,8 @@
     "google",
     "actions",
     "google assistant",
-    "teneo"
+    "teneo",
+    "teneoai"
   ],
   "dependencies": {
     "@artificialsolutions/tie-api-client": "^1.3.7",
