@@ -2,8 +2,10 @@
 This node.js example connector uses the Google Actions SDK which allows you to make your Teneo bot available on Google Assistant and Google Home. The connector acts as middleware between the Google Assistant and Teneo. This guide will take you through the steps needed to make your bot available for testing on Google Assistant.
 
 ## Prerequisites
+
+**Note: Starting November 28, 2022, free Heroku Dynos, free Heroku Postgres, and free Heroku Data for Redis® plans will no longer be available.**
 ### Https
-Google Assistant requires that the connector is available via https. On this page we will be using Heroku to host this connector, for which a (free) Heroku account is needed. You can however also manually install the connector on a location of your choice, see [Running the connector locally](#running-the-connector-locally).
+Google Assistant requires that the connector is available via https. On this page we will be using Heroku to host this connector, for which a Heroku account is needed. You can however also manually install the connector on a location of your choice, see [Running the connector locally](#running-the-connector-locally).
 
 ### Teneo Engine
 Your bot needs to be published and you need to know the engine url.
