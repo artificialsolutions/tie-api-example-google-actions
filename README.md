@@ -125,7 +125,7 @@ If we look at Google's specification of a [basic card](https://developers.google
 }
 ```
 
-For more details on how to populate output parameters in Teneo, please see: [How to populate output parameters](https://developers.artificial-solutions.com/studio/scripting/how-to/populate-output-parameters) in the [Build your bot](https://developers.artificial-solutions.com/studio/) section.
+For more details on how to populate output parameters in Teneo, please see: [How to populate output parameters](https://developers.teneo.ai/article/build/scripting/how-to/populate-output-parameters) in the [Build your bot](https://developers.teneo.ai/article/build) section.
 
 ## Running the connector locally
 If you prefer to manually install this connector or run it locally so you can extend it, proceed as follows:
