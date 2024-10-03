@@ -1,4 +1,9 @@
 # Google Assistant Example Connector for Teneo
+
+> [!IMPORTANT]
+> This project has been retired and archived  
+> If there is a need of continued use / development of this project for your own needs please feel free to fork the project - which will remain here in archived form.
+
 This node.js example connector uses the Google Actions SDK which allows you to make your Teneo bot available on Google Assistant and Google Home. The connector acts as middleware between the Google Assistant and Teneo. This guide will take you through the steps needed to make your bot available for testing on Google Assistant.
 
 ## Prerequisites
